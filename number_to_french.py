@@ -30,7 +30,7 @@ class NumberToFrench:
             5: "cinquante",
             6: "soixante",
         }
-        self.special_words = {
+        self.chunk_idx_to_special_word = {
             1: "mille",
             2: "millions",
         }
@@ -103,8 +103,8 @@ class NumberToFrench:
         reversed_chunks = [chunk[::-1] for chunk in chunks]
         # iterate chunks and build the word
         for idx, chunk in enumerate(reversed_chunks):
-            if idx in self.special_words:
-                words.append(self.special_words[idx])
+            if idx in self.chunk_idx_to_special_word:
+                words.append(self.chunk_idx_to_special_word[idx])
             word = self.triple_digit_to_word(int(chunk))
             if word:
                 words.append(word)
