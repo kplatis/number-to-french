@@ -11,3 +11,5 @@ from number_to_french import NumberToFrench
 
 word = NumberToFrench(1999).to_french_word()
 ```
+
+An example based on the given input can be seen in `main.py`
