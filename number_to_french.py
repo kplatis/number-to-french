@@ -96,6 +96,8 @@ class NumberToFrench:
         str_num = str(self.number)[::-1]
         if len(str_num) > 9:
             raise Exception("Supported numbers up to 9 digits")
+        elif self.number == 0:
+            return "zero"
         words = []
         # split the word in chunks of 3
         chunks = [str_num[i : i + 3] for i in range(0, len(str_num), 3)]
