@@ -2,7 +2,7 @@
 
 ## Requirements
 
-I used python `3.12` to run the 
+I used python `3.12` to develop but any previous version should be enough to run it
 
 ## Implementation
 
