@@ -1,6 +1,29 @@
+"""
+NumberToFrench class converts numbers to french words
+"""
+
+from typing import Union
+
+
 class NumberToFrench:
+    """
+    A class to convert numbers into their French word representation.
+
+    Attributes:
+    -----------
+    number : int
+        The number to be converted to French words.
+    """
 
     def __init__(self, number: int) -> None:
+        """
+        Initializes the NumberToFrench class with the specified number.
+
+        Parameters:
+        -----------
+        number : int
+            The number to be converted to French words.
+        """
         self.__digits_to_words = {
             1: "un",
             2: "deux",
@@ -37,28 +60,48 @@ class NumberToFrench:
 
         self.number = number
 
-    def __triple_digit_to_word(self, num: int) -> str | None:
+    def _triple_digit_to_word(self, num: int) -> Union[str, None]:
         """
-        Convert triplets of numbers to words
+        Convert a number up to three digits to its French word representation.
+
+        Parameters:
+        -----------
+        num : int
+            The number to be converted.
+
+        Returns:
+        --------
+        str | None
+            The French word representation of the number, or None if the number is zero.
         """
         str_num = str(num)
         # if its less than 3 digits or if the number starts with 0
         if len(str_num) < 3 or str_num[0] == "0":
-            return self.__double_digit_to_word(int(str_num))
+            return self._double_digit_to_word(int(str_num))
         else:
             first_digit, rest = str_num[0], str_num[1:3]
             if first_digit == 1:
-                return f"cent {self.__double_digit_to_word(int(rest))}"
+                return f"cent {self._double_digit_to_word(int(rest))}"
             else:
-                return f"{self.__digits_to_words[int(first_digit)]} cent {self.__double_digit_to_word(int(rest))}"
+                return f"{self.__digits_to_words[int(first_digit)]} cent {self._double_digit_to_word(int(rest))}"
 
-    def __double_digit_to_word(self, num: int) -> str | None:
+    def _double_digit_to_word(self, num: int) -> Union[str, None]:
         """
-        Function that receives a number up to 2 digits and turns it to a word string
+        Convert a number up to two digits to its French word representation.
+
+        Parameters:
+        -----------
+        num : int
+            The number to be converted.
+
+        Returns:
+        --------
+        str | None
+            The French word representation of the number, or None if the number is zero.
         """
         if num == 0:
             return None
-        if num < 19:
+        if num < 20:
             return self.__digits_to_words[num]
         else:
             first_num, second_num = int(str(num)[0]), int(str(num)[1])
@@ -69,7 +112,9 @@ class NumberToFrench:
                 elif second_num == 1:
                     return f"{self.__tens[first_num]}-et-un"
                 else:
-                    return f"{self.__tens[first_num]}-{self.__digits_to_words[second_num]}"
+                    return (
+                        f"{self.__tens[first_num]}-{self.__digits_to_words[second_num]}"
+                    )
             # 70-79
             elif num < 80:
                 return f"soixante-{self.__digits_to_words[10 + second_num]}"
@@ -88,16 +133,29 @@ class NumberToFrench:
 
     def to_french_word(self) -> str:
         """
-        Splits the word in chunks of three, then converts each chunk of three numbers to words.
+        Convert the number to its French word representation.
 
-        In any chunk apart from the first one appends special words (million, mille etc)
+        Splits the number into chunks of three digits, converts each chunk to words,
+        and appends special words (e.g., 'million', 'mille') where necessary.
+
+        Returns:
+        --------
+        str
+            The French word representation of the number.
+
+        Raises:
+        -------
+        ValueError
+            If the number has more than 9 digits.
         """
+        if self.number < 0:
+            raise ValueError("Number cannot be negative")
         # convert the number to string for easier parsing
         str_num = str(self.number)[::-1]
         if len(str_num) > 9:
-            raise Exception("Supported numbers up to 9 digits")
+            raise ValueError("Supported numbers up to 9 digits")
         elif self.number == 0:
-            return "zero"
+            return "zéro"
         words = []
         # split the word in chunks of 3
         chunks = [str_num[i : i + 3] for i in range(0, len(str_num), 3)]
@@ -107,7 +165,7 @@ class NumberToFrench:
         for idx, chunk in enumerate(reversed_chunks):
             if idx in self.__chunk_idx_to_special_word:
                 words.append(self.__chunk_idx_to_special_word[idx])
-            word = self.__triple_digit_to_word(int(chunk))
+            word = self._triple_digit_to_word(int(chunk))
             if word:
                 words.append(word)
         return " ".join(reversed(words))

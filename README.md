@@ -1,8 +1,17 @@
 # Number to French
 
-## Implementation and limitations
+## Requirements
 
-The implementation is done in `NumberToFrench` class. The converter can convert numbers of up to 9 digits
+I used python `3.12` to run the 
+
+## Implementation
+
+The implementation is done in `NumberToFrench` class.
+
+## Limitation
+
+- The converter can convert numbers of up to 9 digits. In that case a `ValueError` is raised
+- The number cannot be negative. In that case a `ValueError` is raised
 
 ## How to use
 
@@ -13,3 +22,7 @@ word = NumberToFrench(1999).to_french_word()
 ```
 
 An example based on the given input can be seen in `main.py`
+
+## LLM Usage
+
+Used ChatGPT LLM for generation of pydocs
